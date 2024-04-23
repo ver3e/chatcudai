@@ -1,0 +1,51 @@
+[data-testid="stAppViewContainer"] {
+    background-color: #0E1116;
+}
+[data-testid="stChatMessage"] {
+    background-color: #0a0d1280;
+    background-size: 20px 10px;
+    padding: 1%;
+    background-position: 0 20px 10px 0px;
+    border: 1px solid #7E8AA2;
+}
+[data-testid="stSidebar"] {
+    background-color: #292f4598;
+}
+[data-testid="stHeader"] {
+    background-color: #0E1116;
+    background-size: 20px 10px;
+    background-position: 0 20px 10px 0px;
+}
+[data-testid="stSidebarNavLink"] {
+    background-color: #0D1321;
+    background-size: 20px 10px;
+    background-position: 0 20px 10px 0px;
+    border: 1px solid #7E8AA2;
+}
+[data-testid="stButton"]{
+    padding: 2%;
+}
+[data-testid="stSidebarNavLink"]:hover {
+    background-color: #2E4057;
+}
+[data-testid="baseButton-secondary"] {
+    background-color: #0E1116;
+    border: 1px solid #7E8AA2; 
+}
+[data-testid="baseButton-secondary"]:hover {
+    background-color: #2E4057;
+}
+[data-testid="stChatInputTextArea"] {
+    background-color: #0D1321;
+}
+[data-testid="stFileUploaderDropzone"] {
+    background-color: #2E4057;
+}
+[data-testid="stNotification"] {
+    background-color: #ff6b6b86;
+    opacity: 1;
+    padding: 1.5%;
+}
+[data-testid="stFileUploaderDropzone"]{
+    background-color: #0E1116;
+}
