@@ -11,6 +11,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores import Chroma
 from PIL import Image
 from langchain.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 import json
 import tiktoken
@@ -28,7 +29,7 @@ st.set_page_config(
     page_icon="💬",
     )
 
-gemini_config = {'temperature': 0.7, 'top_p': 1, 'top_k': 1, 'max_output_tokens': 2048}
+
 page_config = {
     st.markdown(
     "<h1 style='text-align: center; color: #b22222; font-family: Arial, sans-serif; background-color: #292f4598;'>chatCUD 💬</h1>",
@@ -37,9 +38,11 @@ page_config = {
     st.markdown("<h4 style='text-align: center; color: white; font-size: 20px; animation: bounce-and-pulse 60s infinite;'>Your CUD AI Assistant</h4>", unsafe_allow_html=True),
 }
 
-load_dotenv()
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model=genai.GenerativeModel(model_name="models/gemini-pro",generation_config=gemini_config)
+model = GoogleGenerativeAI(temperature=0.0,
+            model="gemini-pro",
+            google_api_key=os.environ["api_key"],
+            
+        )
 
 #Extracting and Splitting PDF
 def extract_text(list_of_uploaded_files):
@@ -139,12 +142,12 @@ def main():
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True) 
 
     # Start a conversation using the model, initially with an empty history
-    start_conversation = model.start_chat(history=[])
+   
 
     # Check if 'chat_history' is not already in the session state
     if "chat_history" not in st.session_state:
         # If not, initialize 'chat_history' with the start of the conversation
-        st.session_state.chat_history = start_conversation
+        st.session_state.chat_history = []
     
     # Iterate over each message in the chat history
     for message in st.session_state.chat_history.history:
@@ -176,7 +179,7 @@ def main():
             st.write(user_question)
             final_number = adjust_final_number(user_question, 15000, 4,db)
             retriever=db.as_retriever(search_kwargs={"k": final_number})
-            from langchain_core.runnables import RunnablePassthrough
+            
 
             template = """
             Answer the question based only on the following context:
@@ -208,7 +211,7 @@ def main():
             # Display the responses with assistant's avatar
             with st.chat_message("assistant", avatar="bot.png"):
                 # Write the responses to the chat
-                st.write_stream(stream(response))
+                st.markdown(response)
 
     # Add a button in the sidebar to clear the chat history
     st.sidebar.button("Click to Clear Chat History", on_click=clear_chat_convo)
