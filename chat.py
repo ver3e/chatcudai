@@ -150,7 +150,7 @@ def main():
         st.session_state.chat_history = []
     
     # Iterate over each message in the chat history
-    for message in st.session_state.chat_history.history:
+    for message in st.session_state.chat_history:
         # Get the role name of the message and fetch corresponding avatar if available
         avatar = role_name(message.role)
         # Check if avatar exists
