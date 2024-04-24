@@ -2,9 +2,8 @@ import streamlit as st
 
 import os
 import time
-from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings,GoogleGenerativeAI,ChatGoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAIEmbeddings,GoogleGenerativeAI
 from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
@@ -40,16 +39,10 @@ model = GoogleGenerativeAI(temperature=0.0,
         )
 
 #Extracting and Splitting PDF
-def extract_text(list_of_uploaded_files):
-    pdf_text=''
-    for uploaded_pdfs in list_of_uploaded_files:
-        read_pdf=PdfReader(uploaded_pdfs)
-        for page in read_pdf.pages:
-            pdf_text+=page.extract_text()
+
     
     
-    return pdf_text
-    
+   
 def adjust_final_number(string: str, max_threshold: int, initial_number: int, vectorstore) -> int:
     final_number = initial_number
     while final_number < max_threshold:
