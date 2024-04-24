@@ -1,19 +1,14 @@
 import streamlit as st
-import google.generativeai as genai
+
 import os
 import time
-from dotenv import load_dotenv
 from PyPDF2 import PdfReader
-from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings,GoogleGenerativeAI,ChatGoogleGenerativeAI
-from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores import Chroma
-from PIL import Image
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-import json
 import tiktoken
 
 def num_tokens_from_string(string: str) -> int:
@@ -76,34 +71,10 @@ def get_chunks(text):
 
 
 #Embedding and storing the pdf Local
-def get_embeddings_and_store_pdf(chunk_text):
-    if not isinstance(chunk_text, list):
-        raise ValueError("Text must be a list of text documents")
-    try:
-        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-        create_embedding = FAISS.from_texts(chunk_text, embedding=embedding_model)
-        create_embedding.save_local("embeddings_index")
-    except Exception as e:
-        st.error(f"Error creating embeddings: {e}")
+
 
 #Generating user response for the pdf
-def get_generated_user_input(user_question):
-    # Initialize Google Generative AI Embeddings with the specified model
-    text_embedding = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    
-    # Load stored embeddings using FAISS, allowing dangerous deserialization
-    stored_embeddings = FAISS.load_local("embeddings_index", text_embedding, allow_dangerous_deserialization=True)
-    
-    # Search for similarity between user question and stored embeddings
-    check_pdf_similarity = stored_embeddings.similarity_search(user_question)
 
-    # Generate a prompt for answering the query based on the context and user question
-    prompt = f"Answer this query based on the Context: \n{check_pdf_similarity}?\nQuestion: \n{user_question}"
-
-    # Send the prompt as a message in the chat history and retrieve the response
-    pdf_response = st.session_state.chat_history.send_message(prompt)
-    # Return the response
-    return pdf_response
 
 #Clearing Chat 
 def clear_chat_convo():
